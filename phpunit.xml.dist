@@ -23,4 +23,9 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="COMPANY_INFO_VIRK_USER_ID" value="xxx"/>
+        <env name="COMPANY_INFO_VIRK_PASSWORD" value="xxx"/>
+        <env name="COMPANY_INFO_GAZETTE_KEY" value="xxx"/>
+    </php>
 </phpunit>

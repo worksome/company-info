@@ -4,15 +4,17 @@ namespace Worksome\CompanyInfo\Commands;
 
 use Illuminate\Console\Command;
 
-class CompanyInfoCommand extends Command
+final class CompanyInfoCommand extends Command
 {
-    public $signature = 'company-info';
+    public $signature = 'company-info:lookup
+        {name   : The company name to lookup.}
+        {market : The market to lookup.}';
 
-    public $description = 'My command';
+    public $description = 'Lookup company and return information.';
 
     public function handle(): int
     {
-        $this->comment('All done');
+        $this->comment('OK');
 
         return self::SUCCESS;
     }
