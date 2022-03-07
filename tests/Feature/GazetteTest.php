@@ -2,20 +2,21 @@
 
 use Illuminate\Support\Facades\Http;
 
-it('can lookup company name on the uk gazette service', function () {
+it('can lookup a company name on the uk gazette service', function (string $lookupName, array $expected) {
+    if (config('company-info.services.gazette.key') == '') {
+        test()->markTestSkipped();
+    }
 
-    $name = 'Worksome';
-
-    // Make the Virk API request.
     $response = Http::withBasicAuth(
         config('company-info.services.gazette.key'),
         ''
-    )->get(config('company-info.services.gazette.base_url') . '/search/companies?q=' . $name);
+    )->get(config('company-info.services.gazette.base_url') . '/search/companies?q=' . $lookupName);
 
     expect($response->ok())->toBe(true);
 
-    ray([
-        'body'      => $response->json(),
-        'companies' => $response->json()['items'],
-    ]);
-});
+    expect($response->json()['items'])->toHaveCount(1);
+
+    expect($response->json())->toHaveKey('items.0.title', $expected[0][1]);
+
+    expect($response->json())->toHaveKey('items.0.company_number', $expected[0][0]);
+})->with('uk-companies');

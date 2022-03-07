@@ -2,65 +2,53 @@
 
 use Illuminate\Support\Facades\Http;
 
-it('can lookup company name on dk virk service', function () {
+it('can lookup a company name on dk virk service', function (string $lookupName, array $expected) {
+    if (config('company-info.services.virk.user_id') == '') {
+        test()->markTestSkipped();
+    }
 
-    $name = 'Worksome';
+    if (config('company-info.services.virk.password') == '') {
+        test()->markTestSkipped();
+    }
 
-    // Build request payload.
-    $payload = [
-        '_source' => [
-            'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn',
-            'Vrvirksomhed.cvrNummer',
-            'Vrvirksomhed.virksomhedMetadata.nyesteBeliggenhedsadresse',
-        ],
-        'query' => [
-            // 'term' => [
-            //     'Vrvirksomhed.cvrNummer' => '37990485',
-            // ],
-            // 'wildcard' => [
-            //     'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name . '*'
-            // ],
-            // 'prefix' => [
-            //     'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name
-            // ],
-            'query_string' => [
-                'default_field' => 'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn',
-                'query' => $name,
-            ],
-            // 'bool' => [
-            //     'must' => [
-            //         'prefix' => [
-            //             // Get companies starting with this name.
-            //             'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name
-            //         ],
-            //     ],
-            //     'must_not' => [
-            //         'exists' => [
-            //             // Only query for existing companies.
-            //             'field' => 'Vrvirksomhed.livsforloeb.periode.gyldigTil',
-            //         ],
-            //     ],
-            // ],
-        ],
-        'from' => 0,
-        'size' => 10,
-        'sort' => [],
-    ];
-
-    // Make the Virk API request.
     $response = Http::withBasicAuth(
         config('company-info.services.virk.user_id'),
         config('company-info.services.virk.password')
     )->post(
         config('company-info.services.virk.base_url') . '/cvr-permanent/virksomhed/_search',
-        $payload
+        [
+            '_source' => [
+                'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn',
+                'Vrvirksomhed.cvrNummer',
+                'Vrvirksomhed.virksomhedMetadata.nyesteBeliggenhedsadresse',
+            ],
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        'prefix' => [
+                            // Get companies starting with this name.
+                            'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $lookupName
+                        ],
+                    ],
+                    'must_not' => [
+                        'exists' => [
+                            // Only query for existing companies.
+                            'field' => 'Vrvirksomhed.livsforloeb.periode.gyldigTil',
+                        ],
+                    ],
+                ],
+            ],
+            'from' => 0,
+            'size' => 10,
+            'sort' => [],
+        ]
     );
 
-    ray($response->status());
     expect($response->ok())->toBe(true);
 
-    ray([
-        'body'      => $response->json(),
-        'companies' => $response->json()['hits']['hits'],
-    ]);
-});
+    expect($response->json()['hits']['hits'])->toHaveCount(1);
+
+    expect($response->json())->toHaveKey('hits.hits.0._source.Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn', $expected[0][1]);
+
+    expect($response->json())->toHaveKey('hits.hits.0._source.Vrvirksomhed.cvrNummer', $expected[0][0]);
+})->with('dk-companies');
