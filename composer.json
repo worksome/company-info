@@ -18,8 +18,7 @@
     "require": {
         "php": "^8.0|^8.1",
         "guzzlehttp/guzzle": "^7.4",
-        "illuminate/contracts": "^8.80 || ^9.0",
-        "nunomaduro/termwind": "^1.6"
+        "illuminate/contracts": "^8.80 || ^9.0"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.10",
@@ -46,7 +45,6 @@
     "scripts": {
         "lint": "vendor/bin/phpcbf",
         "test:unit": "vendor/bin/pest -p",
-        "test:coverage": "vendor/bin/pest -p --coverage",
         "test:types": "vendor/bin/phpstan analyse",
         "test:style": "vendor/bin/phpcs -n",
         "test": [

@@ -13,9 +13,10 @@ final class CompanyInfoLookupCommand extends Command
 
     public $description = 'Lookup company and return information.';
 
-    public function handle(CompanyInfo $companyInfo): int
+    public function handle(): int
     {
-        $companies = collect($companyInfo->lookup($this->argument('name'), $this->argument('market')))
+        // @phpstan-ignore-next-line
+        $companies = collect(CompanyInfo::lookup($this->argument('name'), $this->argument('market')))
             ->map(function ($item) {
                 return [
                     $item['number'],
