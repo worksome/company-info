@@ -16,37 +16,38 @@ class CompanyInfoVirk
      */
     public static function lookup(string $name): ?array
     {
-        // @phpstan-ignore-next-line
-        $response = Http::withBasicAuth(config('company-info.services.virk.user_id') ?? '', config('company-info.services.virk.password') ?? '')
-            ->post(
-                config('company-info.services.virk.base_url') . '/cvr-permanent/virksomhed/_search',
-                [
-                    '_source' => [
-                        'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn',
-                        'Vrvirksomhed.cvrNummer',
-                        'Vrvirksomhed.virksomhedMetadata.nyesteBeliggenhedsadresse',
-                    ],
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                'prefix' => [
-                                    // Get companies starting with this name.
-                                    'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name
-                                ],
+        $response = Http::withBasicAuth(
+            config('company-info.services.virk.user_id') ?? '',
+            config('company-info.services.virk.password') ?? ''
+        )->post(
+            config('company-info.services.virk.base_url') . '/cvr-permanent/virksomhed/_search',
+            [
+                '_source' => [
+                    'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn',
+                    'Vrvirksomhed.cvrNummer',
+                    'Vrvirksomhed.virksomhedMetadata.nyesteBeliggenhedsadresse',
+                ],
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            'prefix' => [
+                                // Get companies starting with this name.
+                                'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name
                             ],
-                            'must_not' => [
-                                'exists' => [
-                                    // Only query for existing companies.
-                                    'field' => 'Vrvirksomhed.livsforloeb.periode.gyldigTil',
-                                ],
+                        ],
+                        'must_not' => [
+                            'exists' => [
+                                // Only query for existing companies.
+                                'field' => 'Vrvirksomhed.livsforloeb.periode.gyldigTil',
                             ],
                         ],
                     ],
-                    'from' => 0,
-                    'size' => 10,
-                    'sort' => [],
-                ]
-            )->throw();
+                ],
+                'from' => 0,
+                'size' => 10,
+                'sort' => [],
+            ]
+        );
 
         if ($response->failed()) {
             return null;

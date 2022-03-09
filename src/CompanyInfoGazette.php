@@ -16,9 +16,10 @@ class CompanyInfoGazette
      */
     public static function lookup(string $name): ?array
     {
-        // @phpstan-ignore-next-line
-        $response = Http::withBasicAuth(config('company-info.services.gazette.key') ?? '', '')
-            ->get(config('company-info.services.gazette.base_url') . "/search/companies?q={$name}");
+        $response = Http::withBasicAuth(
+            config('company-info.services.gazette.key') ?? '',
+            ''
+        )->get(config('company-info.services.gazette.base_url') . "/search/companies?q={$name}");
 
         if ($response->failed()) {
             return null;
