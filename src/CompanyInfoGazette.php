@@ -53,7 +53,7 @@ class CompanyInfoGazette
      *
      * @return array|null Array of company info, or null if request to service failed.
      */
-    private static function processResponse(Response $response): array
+    private static function processResponse(Response $response): ?array
     {
         if ($response->failed()) {
             return null;
