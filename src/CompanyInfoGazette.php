@@ -13,9 +13,11 @@ class CompanyInfoGazette
     /**
      * Lookup a company name on the English Gazette service, return processed company info.
      *
+     * TODO: Should probably do a more specific query for the name, if possible?
+     *
      * @param string $name Name of company to lookup.
      *
-     * @return array|null Array of company info, or null if request to service failed.Vir
+     * @return array|null Array of company info, or null if request to service failed.
      */
     public static function lookupName(string $name): ?array
     {
@@ -23,15 +25,13 @@ class CompanyInfoGazette
         $response = Http::withBasicAuth(config('company-info.services.gazette.key'), '')
             ->get(config('company-info.services.gazette.base_url') . "/search/companies?q={$name}");
 
-        if ($response->failed()) {
-            return null;
-        }
-
         return self::processResponse($response);
     }
 
     /**
      * Lookup a company from number on the English Gazette service, return processed company info.
+     *
+     * TODO: Should probably do a more specific query for the number, if possible?
      *
      * @param string $number Number of company to lookup.
      *
@@ -39,9 +39,11 @@ class CompanyInfoGazette
      */
     public static function lookupNumber(string $number): ?array
     {
-        // @TODO: Not implemented yet.
+        // @phpstan-ignore-next-line
+        $response = Http::withBasicAuth(config('company-info.services.gazette.key'), '')
+            ->get(config('company-info.services.gazette.base_url') . "/search/companies?q={$number}");
 
-        return null;
+        return self::processResponse($response);
     }
 
     /**
@@ -49,25 +51,30 @@ class CompanyInfoGazette
      *
      * @param Response $response Response.
      *
-     * @return array Array of company info.
+     * @return array|null Array of company info, or null if request to service failed.
      */
     private static function processResponse(Response $response): array
     {
+        if ($response->failed()) {
+            return null;
+        }
+
         $companies = [];
 
         foreach (Arr::wrap($response->json('items')) as $company) {
             if ($company['company_status'] == 'active') {
                 $address = $company['address'];
 
-                // Some address data might be missing.
-                $addressLine = isset($address['address_line_1']) ? $address['address_line_1'] : '';
-                if (empty($addressLine)) {
-                    $addressLine = isset($address['address_line_2']) ? $address['address_line_2'] : '';
+                $addressLine1 = $address['address_line_1'] ?? '';
+                $addressLine2 = $address['address_line_2'] ?? '';
+                if (empty($addressLine1)) {
+                    $addressLine1 = $addressLine2;
+                    $addressLine2 = '';
                 }
 
-                $premises = isset($address['premises']) ? $address['premises'] : '';
+                $premises = $address['premises'] ?? '';
 
-                $country = isset($address['country']) ? $address['country'] : '';
+                $country = $address['country'] ?? '';
 
                 // We've seen Ireland as a country in the data.
                 if ($country == 'Ireland') {
@@ -77,12 +84,13 @@ class CompanyInfoGazette
                 }
 
                 $companies[] = [
-                    'number'  => $company['company_number'],
-                    'name'    => $company['title'],
-                    'address' => empty($premises) ? $addressLine : $premises . ' ' . $addressLine,
-                    'zipCode' => isset($address['postal_code']) ? $address['postal_code'] : '',
-                    'city'    => isset($address['locality']) ? $address['locality'] : '',
-                    'country' => $country,
+                    'number'   => $company['company_number'],
+                    'name'     => $company['title'],
+                    'address1' => empty($premises) ? $addressLine1 : "{$premises} {$addressLine1}",
+                    'address2' => $address['address_line_2'] ?? '',
+                    'zipcode'  => $address['postal_code'] ?? '',
+                    'city'     => $address['locality'] ?? '',
+                    'country'  => $country,
                 ];
             }
         }

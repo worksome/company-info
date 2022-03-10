@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Worksome\CompanyInfo\CompanyInfo;
 use Worksome\CompanyInfo\Exceptions\InvalidMarketException;
 
-it('can lookup a company name using faked dk service', function (string $name, array $expected, array $response) {
+it('can lookup a company name using faked dk service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
         '*' => Http::response($response)
     ]);
@@ -14,7 +14,7 @@ it('can lookup a company name using faked dk service', function (string $name, a
     companyLookupExpectations(CompanyInfo::lookupName($name, 'dk'), $expected);
 })->with('dk-companies');
 
-it('can lookup a company name using actual dk service', function (string $name, array $expected) {
+it('can lookup a company name using actual dk service', function (string $name, string $number, array $expected) {
     // Skip test if not configured with actual credentials (in phpunit.xml).
     if (
         config('company-info.services.virk.user_id') == ''
@@ -26,7 +26,27 @@ it('can lookup a company name using actual dk service', function (string $name, 
     companyLookupExpectations(CompanyInfo::lookupName($name, 'dk'), $expected);
 })->with('dk-companies');
 
-it('can lookup a company name using faked uk service', function (string $name, array $expected, array $response) {
+it('can lookup a company number using faked dk service', function (string $name, string $number, array $expected, array $response) {
+    Http::fake([
+        '*' => Http::response($response)
+    ]);
+
+    companyLookupExpectations(CompanyInfo::lookupNumber($number, 'dk'), $expected);
+})->with('dk-companies');
+
+it('can lookup a company number using actual dk service', function (string $name, string $number, array $expected) {
+    // Skip test if not configured with actual credentials (in phpunit.xml).
+    if (
+        config('company-info.services.virk.user_id') == ''
+        || config('company-info.services.virk.password') == ''
+    ) {
+        test()->markTestSkipped();
+    }
+
+    companyLookupExpectations(CompanyInfo::lookupNumber($number, 'dk'), $expected);
+})->with('dk-companies');
+
+it('can lookup a company name using faked uk service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
         '*' => Http::response($response)
     ]);
@@ -34,7 +54,7 @@ it('can lookup a company name using faked uk service', function (string $name, a
     companyLookupExpectations(CompanyInfo::lookupName($name, 'uk'), $expected);
 })->with('uk-companies');
 
-it('can lookup a company name on the uk gazette with actual service', function (string $name, array $expected) {
+it('can lookup a company name on the uk gazette with actual service', function (string $name, string $number, array $expected) {
     // Skip test if not configured with actual credentials (in phpunit.xml).
     if (config('company-info.services.gazette.key') == '') {
         test()->markTestSkipped();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Http;
 use Worksome\CompanyInfo\CompanyInfoVirk;
 
-it('can lookup a company name on dk virk with faked service', function (string $name, array $expected, array $response) {
+it('can lookup a company name on dk virk with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
         '*' => Http::response($response),
     ]);
@@ -15,7 +15,7 @@ it('can lookup a company name on dk virk with faked service', function (string $
     companyLookupExpectations($companies, $expected);
 })->with('dk-companies');
 
-it('can lookup a company name on dk virk with actual service', function (string $name, array $expected) {
+it('can lookup a company name on dk virk with actual service', function (string $name, string $number, array $expected) {
     // Skip test if not configured with actual credentials (in phpunit.xml).
     if (
         config('company-info.services.virk.user_id') == ''

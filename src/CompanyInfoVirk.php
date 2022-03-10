@@ -51,10 +51,6 @@ class CompanyInfoVirk
                 ]
             );
 
-        if ($response->failed()) {
-            return null;
-        }
-
         return self::processResponse($response);
     }
 
@@ -67,9 +63,28 @@ class CompanyInfoVirk
      */
     public static function lookupNumber(string $number): ?array
     {
-        // @TODO: Not implemented yet.
+        // @phpstan-ignore-next-line
+        $response = Http::withBasicAuth(config('company-info.services.virk.user_id'), config('company-info.services.virk.password'))
+            ->post(
+                config('company-info.services.virk.base_url') . '/cvr-permanent/virksomhed/_search',
+                [
+                    '_source' => [
+                        'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn',
+                        'Vrvirksomhed.cvrNummer',
+                        'Vrvirksomhed.virksomhedMetadata.nyesteBeliggenhedsadresse',
+                    ],
+                    'query' => [
+                        'term' => [
+                            'Vrvirksomhed.cvrNummer' => $number
+                        ],
+                    ],
+                    'from' => 0,
+                    'size' => 10,
+                    'sort' => [],
+                ]
+            );
 
-        return null;
+        return self::processResponse($response);
     }
 
     /**
@@ -77,10 +92,14 @@ class CompanyInfoVirk
      *
      * @param Response $response Response.
      *
-     * @return array Array of company info.
+     * @return array|null Array of company info, or null if request to service failed.
      */
     private static function processResponse(Response $response): array
     {
+        if ($response->failed()) {
+            return null;
+        }
+
         $companies = [];
 
         foreach (Arr::wrap($response->json('hits.hits')) as $company) {
@@ -96,12 +115,13 @@ class CompanyInfoVirk
             $floorDoor = isset($address['sidedoer']) ? ' ' . $address['sidedoer'] : '';
 
             $companies[] = [
-                'number'  => $companyData['cvrNummer'],
-                'name'    => $companyData['virksomhedMetadata']['nyesteNavn']['navn'],
-                'address' => $address['vejnavn'] . ' ' . $streetNumber . $floor . $floorDoor,
-                'zipCode' => $address['postnummer'],
-                'city'    => $address['postdistrikt'],
-                'country' => $address['landekode'],
+                'number'   => $companyData['cvrNummer'],
+                'name'     => $companyData['virksomhedMetadata']['nyesteNavn']['navn'],
+                'address1' => $address['vejnavn'] . ' ' . $streetNumber . $floor . $floorDoor,
+                'address2' => $address['bynavn'] ?? '',
+                'zipcode'  => $address['postnummer'],
+                'city'     => $address['postdistrikt'],
+                'country'  => $address['landekode'],
             ];
         }
 

@@ -10,9 +10,9 @@ use Worksome\CompanyInfo\CompanyInfo;
 final class CompanyInfoLookupCommand extends Command
 {
     public $signature = 'company-info:lookup
-    {--name   : The company name to lookup.}
-    {--number : The company name to lookup.}
-    {--market : The market to lookup.}';
+        {--name=   : The company name to lookup.}
+        {--number= : The company number to lookup.}
+        {--market= : The market to lookup.}';
 
     public $description = 'Lookup company and return information.';
 
@@ -68,15 +68,16 @@ final class CompanyInfoLookupCommand extends Command
             return [
                 $item['number'],
                 $item['name'],
-                $item['address'],
-                $item['zipCode'],
+                $item['address1'],
+                $item['address2'],
+                $item['zipcode'],
                 $item['city'],
                 $item['country'],
             ];
         });
 
         $this->table(
-            ['Number', 'Name', 'Address', 'ZipCode', 'City', 'Country'],
+            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country'],
             $companies->toArray()
         );
     }
