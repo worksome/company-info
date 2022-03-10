@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Http;
 use Worksome\CompanyInfo\CompanyInfoGazette;
 
@@ -8,7 +10,7 @@ it('can lookup a company name on the uk gazette with faked service', function (s
         '*' => Http::response($response)
     ]);
 
-    $companies = CompanyInfoGazette::lookup($name);
+    $companies = CompanyInfoGazette::lookupName($name);
 
     companyLookupExpectations($companies, $expected);
 })->with('uk-companies');
@@ -19,7 +21,7 @@ it('can lookup a company name on the uk gazette with actual service', function (
         test()->markTestSkipped();
     }
 
-    $companies = CompanyInfoGazette::lookup($name);
+    $companies = CompanyInfoGazette::lookupName($name);
 
     companyLookupExpectations($companies, $expected);
 })->with('uk-companies');

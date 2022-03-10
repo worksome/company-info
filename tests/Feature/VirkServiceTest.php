@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Http;
 use Worksome\CompanyInfo\CompanyInfoVirk;
 
@@ -8,7 +10,7 @@ it('can lookup a company name on dk virk with faked service', function (string $
         '*' => Http::response($response),
     ]);
 
-    $companies = CompanyInfoVirk::lookup($name);
+    $companies = CompanyInfoVirk::lookupName($name);
 
     companyLookupExpectations($companies, $expected);
 })->with('dk-companies');
@@ -22,7 +24,7 @@ it('can lookup a company name on dk virk with actual service', function (string 
         test()->markTestSkipped();
     }
 
-    $companies = CompanyInfoVirk::lookup($name);
+    $companies = CompanyInfoVirk::lookupName($name);
 
     companyLookupExpectations($companies, $expected);
 })->with('dk-companies');

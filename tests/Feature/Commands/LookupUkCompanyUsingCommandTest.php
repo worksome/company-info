@@ -10,8 +10,8 @@ it('looks up company info for uk market using artisan command', function (string
 
     $this
         ->artisan('company-info:lookup', [
-            'name'   => $name,
-            'market' => 'uk',
+            '--name'   => $name,
+            '--market' => 'uk',
         ])
         ->expectsTable(
             ['Number', 'Name', 'Address', 'ZipCode', 'City', 'Country'],

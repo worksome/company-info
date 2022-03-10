@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Worksome\CompanyInfo;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
@@ -14,7 +17,7 @@ class CompanyInfoGazette
      *
      * @return array|null Array of company info, or null if request to service failed.Vir
      */
-    public static function lookup(string $name): ?array
+    public static function lookupName(string $name): ?array
     {
         // @phpstan-ignore-next-line
         $response = Http::withBasicAuth(config('company-info.services.gazette.key'), '')
@@ -24,6 +27,32 @@ class CompanyInfoGazette
             return null;
         }
 
+        return self::processResponse($response);
+    }
+
+    /**
+     * Lookup a company from number on the English Gazette service, return processed company info.
+     *
+     * @param string $number Number of company to lookup.
+     *
+     * @return array|null Array of company info, or null if request to service failed.
+     */
+    public static function lookupNumber(string $number): ?array
+    {
+        // @TODO: Not implemented yet.
+
+        return null;
+    }
+
+    /**
+     * Process the response from the Virk API call.
+     *
+     * @param Response $response Response.
+     *
+     * @return array Array of company info.
+     */
+    private static function processResponse(Response $response): array
+    {
         $companies = [];
 
         foreach (Arr::wrap($response->json('items')) as $company) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Http;
 use Worksome\CompanyInfo\CompanyInfo;
 use Worksome\CompanyInfo\Exceptions\InvalidMarketException;
@@ -9,7 +11,7 @@ it('can lookup a company name using faked dk service', function (string $name, a
         '*' => Http::response($response)
     ]);
 
-    companyLookupExpectations(CompanyInfo::lookup($name, 'dk'), $expected);
+    companyLookupExpectations(CompanyInfo::lookupName($name, 'dk'), $expected);
 })->with('dk-companies');
 
 it('can lookup a company name using actual dk service', function (string $name, array $expected) {
@@ -21,7 +23,7 @@ it('can lookup a company name using actual dk service', function (string $name, 
         test()->markTestSkipped();
     }
 
-    companyLookupExpectations(CompanyInfo::lookup($name, 'dk'), $expected);
+    companyLookupExpectations(CompanyInfo::lookupName($name, 'dk'), $expected);
 })->with('dk-companies');
 
 it('can lookup a company name using faked uk service', function (string $name, array $expected, array $response) {
@@ -29,7 +31,7 @@ it('can lookup a company name using faked uk service', function (string $name, a
         '*' => Http::response($response)
     ]);
 
-    companyLookupExpectations(CompanyInfo::lookup($name, 'uk'), $expected);
+    companyLookupExpectations(CompanyInfo::lookupName($name, 'uk'), $expected);
 })->with('uk-companies');
 
 it('can lookup a company name on the uk gazette with actual service', function (string $name, array $expected) {
@@ -38,9 +40,9 @@ it('can lookup a company name on the uk gazette with actual service', function (
         test()->markTestSkipped();
     }
 
-    companyLookupExpectations(CompanyInfo::lookup($name, 'uk'), $expected);
+    companyLookupExpectations(CompanyInfo::lookupName($name, 'uk'), $expected);
 })->with('uk-companies');
 
 it('throws exception when trying to lookup a company name on an invalid market', function () {
-    CompanyInfo::lookup('hest', 'invalid');
+    CompanyInfo::lookupName('hest', 'invalid');
 })->throws(InvalidMarketException::class);

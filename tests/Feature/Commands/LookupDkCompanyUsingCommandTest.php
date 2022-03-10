@@ -13,8 +13,8 @@ it('looks up company info for dk market using artisan command', function (string
 
     $this
         ->artisan('company-info:lookup', [
-            'name'   => $name,
-            'market' => 'dk',
+            '--name'   => $name,
+            '--market' => 'dk',
         ])
         ->expectsTable(
             ['Number', 'Name', 'Address', 'ZipCode', 'City', 'Country'],
