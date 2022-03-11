@@ -23,6 +23,25 @@ it('looks up company info on name for dk market using artisan command', function
         ->assertSuccessful();
 })->with('dk-companies');
 
+it('looks up company info on name for dk market using artisan command, output as json', function (string $name, string $number, array $expected) {
+    // Skip test if not configured with actual credentials (in phpunit.xml).
+    if (
+        config('company-info.services.virk.user_id') == ''
+        || config('company-info.services.virk.password') == ''
+    ) {
+        test()->markTestSkipped();
+    }
+
+    $this
+        ->artisan('company-info:lookup', [
+            '--name'   => $name,
+            '--market' => 'dk',
+            '--json'   => null,
+        ])
+        // @TODO: ->expectsOutput('the json output')
+        ->assertSuccessful();
+})->with('dk-companies');
+
 it('looks up company info on number for dk market using artisan command', function (string $name, string $number, array $expected) {
     // Skip test if not configured with actual credentials (in phpunit.xml).
     if (

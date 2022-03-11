@@ -9,10 +9,17 @@ use Worksome\CompanyInfo\CompanyInfo;
 
 final class CompanyInfoLookupCommand extends Command
 {
+    /**
+     * Options for JSON display.
+     */
+    private const JSON_OPTIONS = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR;
+
     public $signature = 'company-info:lookup
         {--name=   : The company name to lookup.}
         {--number= : The company number to lookup.}
-        {--market= : The market to lookup.}';
+        {--market= : The market to lookup.}
+        {--json    : Output as JSON, instead of table.}
+        ';
 
     public $description = 'Lookup company and return information.';
 
@@ -23,46 +30,53 @@ final class CompanyInfoLookupCommand extends Command
      */
     public function handle(): int
     {
+        $market = empty($this->option('market')) ? config('company-info.default-market') : $this->option('market');
+
+        $companies = [];
+
         if ($this->option('name')) {
             // @phpstan-ignore-next-line
-            $this->lookupName($this->option('name'), $this->option('market'));
+            $companies = CompanyInfo::lookupName($this->option('name'), $market);
         }
 
         if ($this->option('number')) {
             // @phpstan-ignore-next-line
-            $this->lookupNumber($this->option('number'), $this->option('market'));
+            $companies = CompanyInfo::lookupNumber($this->option('number'), $market);
+        }
+
+        if ($this->option('json')) {
+            $this->displayJson($companies);
+        } else {
+            $this->displayTable($companies);
         }
 
         return self::SUCCESS;
     }
 
     /**
-     * Lookup company from name.
+     * Display company information in human-readable table format.
      *
-     * @param string $name   Name of company.
-     * @param string $market Market code.
+     * @param  array|null $companies Array of companies.
      *
      * @return void
      */
-    private function lookupName(string $name, string $market): void
+    private function displayJson(?array $companies): void
     {
-        $this->displayCompanies(CompanyInfo::lookupName($name, $market));
+        $json = json_encode($companies, self::JSON_OPTIONS);
+
+        if ($json !== false) {
+            $this->line($json);
+        }
     }
 
     /**
-     * Lookup company from number.
+     * Display company information in human-readable table format.
      *
-     * @param string $number Number of company.
-     * @param string $market Market code.
+     * @param  array|null $companies Array of companies.
      *
      * @return void
      */
-    private function lookupNumber(string $number, string $market): void
-    {
-        $this->displayCompanies(CompanyInfo::lookupNumber($number, $market));
-    }
-
-    private function displayCompanies(?array $companies): void
+    private function displayTable(?array $companies): void
     {
         $companies = collect($companies)->map(function ($item) {
             return [
