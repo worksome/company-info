@@ -87,7 +87,7 @@ class CompanyInfoGazette
                     'number'   => $company['company_number'],
                     'name'     => $company['title'],
                     'address1' => empty($premises) ? $addressLine1 : "{$premises} {$addressLine1}",
-                    'address2' => $address['address_line_2'] ?? '',
+                    'address2' => $addressLine2,
                     'zipcode'  => $address['postal_code'] ?? '',
                     'city'     => $address['locality'] ?? '',
                     'country'  => $country,
