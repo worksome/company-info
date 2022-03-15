@@ -56,7 +56,7 @@ final class CompanyInfoLookupCommand extends Command
     /**
      * Display company information in human-readable table format.
      *
-     * @param  array|null $companies Array of companies.
+     * @param array|null $companies Array of companies.
      *
      * @return void
      */
@@ -72,7 +72,7 @@ final class CompanyInfoLookupCommand extends Command
     /**
      * Display company information in human-readable table format.
      *
-     * @param  array|null $companies Array of companies.
+     * @param array|null $companies Array of companies.
      *
      * @return void
      */
