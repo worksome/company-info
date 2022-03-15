@@ -30,7 +30,7 @@ final class CompanyInfoLookupCommand extends Command
      */
     public function handle(): int
     {
-        $market = empty($this->option('market')) ? config('company-info.default-market') : $this->option('market');
+        $market = $this->option('market') ?? config('company-info.default-market');
 
         $companies = [];
 
