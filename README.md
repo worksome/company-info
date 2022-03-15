@@ -112,6 +112,10 @@ composer test
 
 See `composer.json` for other options for tests and linting.
 
+The test suite uses a faked http response instead of calling the actual external services. The faked response is a copy of an actual response from the service.
+
+If you want to run tests against the actual external service, copy `phpunit.xml.dist` to `phpunit.xml` and change the `COMPANY_INFO_xxx` variables in it to the credentials you have obtained.
+
 ## Ideas for improvements
 
 There is a [free Danish API service](https://cvrapi.dk/documentation) for CVR lookups, which does not require obtaining access from VIRK, but is rate-limited.
