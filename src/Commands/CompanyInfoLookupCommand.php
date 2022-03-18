@@ -17,7 +17,7 @@ final class CompanyInfoLookupCommand extends Command
     public $signature = 'company-info:lookup
         {--name=   : The company name to lookup.}
         {--number= : The company number to lookup.}
-        {--market= : The market to lookup.}
+        {--country= : The country to lookup.}
         {--json    : Output as JSON, instead of table.}
         ';
 
@@ -28,27 +28,21 @@ final class CompanyInfoLookupCommand extends Command
      *
      * @return int
      */
-    public function handle(): int
+    public function handle(CompanyInfo $service): int
     {
-        $market = $this->option('market') ?? config('company-info.default-market');
+        $country = $this->option('country') ?? config('company-info.default-country');
 
         $companies = [];
 
         if ($this->option('name')) {
-            // @phpstan-ignore-next-line
-            $companies = CompanyInfo::lookupName($this->option('name'), $market);
+            $companies = $service->lookupName($this->option('name'), $country);
         }
 
         if ($this->option('number')) {
-            // @phpstan-ignore-next-line
-            $companies = CompanyInfo::lookupNumber($this->option('number'), $market);
+            $companies = $service->lookupNumber($this->option('number'), $country);
         }
 
-        if ($this->option('json')) {
-            $this->displayJson($companies);
-        } else {
-            $this->displayTable($companies);
-        }
+        $this->option('json') ? $this->displayJson($companies) : $this->displayTable($companies);
 
         return self::SUCCESS;
     }
@@ -78,20 +72,22 @@ final class CompanyInfoLookupCommand extends Command
      */
     private function displayTable(?array $companies): void
     {
-        $companies = collect($companies)->map(function ($item) {
+        $companies = collect($companies)->map(function ($company) {
             return [
-                $item['number'],
-                $item['name'],
-                $item['address1'],
-                $item['address2'],
-                $item['zipcode'],
-                $item['city'],
-                $item['country'],
+                $company->number,
+                $company->name,
+                $company->address1,
+                $company->address2,
+                $company->zipcode,
+                $company->city,
+                $company->country,
+                $company->phone,
+                $company->email,
             ];
         });
 
         $this->table(
-            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country'],
+            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
             $companies->toArray()
         );
     }

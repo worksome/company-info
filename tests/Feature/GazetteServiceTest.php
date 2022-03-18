@@ -3,38 +3,42 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Http;
-use Worksome\CompanyInfo\CompanyInfoGazette;
+use Worksome\CompanyInfo\Support\CompanyInfoManager;
 
-it('can lookup a company name on the uk gazette with faked service', function (string $name, string $number, array $expected, array $response) {
+it('can lookup a company name on the gb gazette with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
-        '*' => Http::response($response)
+        '*' => Http::response($response['gazette'])
     ]);
 
-    companyLookupExpectations(CompanyInfoGazette::lookupName($name), $expected);
-})->with('uk-companies');
+    $service = $this->app->get(CompanyInfoManager::class)->driver('gazette');
 
-it('can lookup a company name on the uk gazette with actual service', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (config('company-info.services.gazette.key') == '') {
-        test()->markTestSkipped();
-    }
+    expect($service->lookupName($name, 'gb'))->toHaveCompanyInfo($expected);
+})
+->with('gb-companies');
 
-    companyLookupExpectations(CompanyInfoGazette::lookupName($name), $expected);
-})->with('uk-companies');
+it('can lookup a company name on the gb gazette with actual service', function (string $name, string $number, array $expected) {
+    $service = $this->app->get(CompanyInfoManager::class)->driver('gazette');
 
-it('can lookup a company number on the uk gazette with faked service', function (string $name, string $number, array $expected, array $response) {
+    expect($service->lookupName($name, 'gb'))->toHaveCompanyInfo($expected);
+})
+->with('gb-companies')
+->skip(fn () => config('company-info.providers.gazette.key') === '');
+
+it('can lookup a company number on the gb gazette with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
-        '*' => Http::response($response)
+        '*' => Http::response($response['gazette'])
     ]);
 
-    companyLookupExpectations(CompanyInfoGazette::lookupNumber($number), $expected);
-})->with('uk-companies');
+    $service = $this->app->get(CompanyInfoManager::class)->driver('gazette');
 
-it('can lookup a company number on the uk gazette with actual service', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (config('company-info.services.gazette.key') == '') {
-        test()->markTestSkipped();
-    }
+    expect($service->lookupNumber($number, 'gb'))->toHaveCompanyInfo($expected);
+})
+->with('gb-companies');
 
-    companyLookupExpectations(CompanyInfoGazette::lookupNumber($number), $expected);
-})->with('uk-companies');
+it('can lookup a company number on the gb gazette with actual service', function (string $name, string $number, array $expected) {
+    $service = $this->app->get(CompanyInfoManager::class)->driver('gazette');
+
+    expect($service->lookupNumber($number, 'gb'))->toHaveCompanyInfo($expected);
+})
+->with('gb-companies')
+->skip(fn () => config('company-info.providers.gazette.key') === '');

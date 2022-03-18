@@ -3,66 +3,55 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Http;
-use Worksome\CompanyInfo\CompanyInfo;
-use Worksome\CompanyInfo\Exceptions\InvalidMarketException;
+use Worksome\CompanyInfo\Facades\CompanyInfo;
+use Worksome\CompanyInfo\Exceptions\InvalidCountryException;
 
 it('can lookup a company name using faked dk service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
-        '*' => Http::response($response)
+        '*' => Http::response($response['virk'])
     ]);
 
-    companyLookupExpectations(CompanyInfo::lookupName($name, 'dk'), $expected);
-})->with('dk-companies');
+    expect(CompanyInfo::lookupName($name, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies');
 
-it('can lookup a company name using actual dk service', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (
-        config('company-info.services.virk.user_id') == ''
-        || config('company-info.services.virk.password') == ''
-    ) {
-        test()->markTestSkipped();
-    }
+it('can lookup a company name using actual dk virk service', function (string $name, string $number, array $expected) {
+    expect(CompanyInfo::lookupName($name, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
 
-    companyLookupExpectations(CompanyInfo::lookupName($name, 'dk'), $expected);
-})->with('dk-companies');
-
-it('can lookup a company number using faked dk service', function (string $name, string $number, array $expected, array $response) {
+it('can lookup a company number using faked dk virk service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
-        '*' => Http::response($response)
+        '*' => Http::response($response['virk'])
     ]);
 
-    companyLookupExpectations(CompanyInfo::lookupNumber($number, 'dk'), $expected);
-})->with('dk-companies');
+    expect(CompanyInfo::lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies');
 
-it('can lookup a company number using actual dk service', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (
-        config('company-info.services.virk.user_id') == ''
-        || config('company-info.services.virk.password') == ''
-    ) {
-        test()->markTestSkipped();
-    }
+it('can lookup a company number using actual dk virk service', function (string $name, string $number, array $expected) {
+    expect(CompanyInfo::lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
 
-    companyLookupExpectations(CompanyInfo::lookupNumber($number, 'dk'), $expected);
-})->with('dk-companies');
-
-it('can lookup a company name using faked uk service', function (string $name, string $number, array $expected, array $response) {
+it('can lookup a company name using faked gb gazette service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
-        '*' => Http::response($response)
+        '*' => Http::response($response['gazette'])
     ]);
 
-    companyLookupExpectations(CompanyInfo::lookupName($name, 'uk'), $expected);
-})->with('uk-companies');
+    expect(CompanyInfo::lookupName($name, 'gb'))->toHaveCompanyInfo($expected);
+})
+->with('gb-companies');
 
-it('can lookup a company name on the uk gazette with actual service', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (config('company-info.services.gazette.key') == '') {
-        test()->markTestSkipped();
-    }
+it('can lookup a company name using actual gb gazette service', function (string $name, string $number, array $expected) {
+    expect(CompanyInfo::lookupName($name, 'gb'))->toHaveCompanyInfo($expected);
+})
+->with('gb-companies')
+->skip(fn () => config('company-info.providers.gazette.key') === '');
 
-    companyLookupExpectations(CompanyInfo::lookupName($name, 'uk'), $expected);
-})->with('uk-companies');
-
-it('throws exception when trying to lookup a company name on an invalid market', function () {
+it('throws exception when trying to lookup a company name on an invalid country', function () {
     CompanyInfo::lookupName('hest', 'invalid');
-})->throws(InvalidMarketException::class);
+})
+->throws(InvalidCountryException::class);

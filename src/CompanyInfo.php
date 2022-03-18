@@ -4,57 +4,86 @@ declare(strict_types=1);
 
 namespace Worksome\CompanyInfo;
 
-use Worksome\CompanyInfo\Exceptions\InvalidMarketException;
+use Worksome\CompanyInfo\Contracts\CompanyInfoProvider;
+use Worksome\CompanyInfo\Exceptions\InvalidCountryException;
+use Worksome\CompanyInfo\Support\CompanyInfoManager;
 
 class CompanyInfo
 {
     /**
-     * Lookup a company from name on a service given a market, return processed company info.
-     *
-     * @param string $name   Name of company to lookup.
-     * @param string $market Market code or '' for default market.
-     *
-     * @return array|null Array of company info, or null if request to service failed.
-     *
-     * @throws InvalidMarketException If given market is not supported.
+     * Construct the provider.
      */
-    public static function lookupName(string $name, string $market = ''): ?array
-    {
-        $market = empty($market) ? config('company-info.default-market') : $market;
-
-        switch ($market) {
-            case 'dk':
-                return CompanyInfoVirk::lookupName($name);
-            case 'uk':
-                return CompanyInfoGazette::lookupName($name);
-            default:
-                // @phpstan-ignore-next-line
-                throw new InvalidMarketException($market);
-        }
+    public function __construct(
+        private array $config,
+        private CompanyInfoManager $manager,
+    ) {
     }
 
     /**
-     * Lookup a company from number on a service given a market, return processed company info.
+     * Lookup a company name, return processed company info.
      *
-     * @param string $number Number of company to lookup.
-     * @param string $market Market code or '' for default market.
+     * @param string $name    Name of company to lookup.
+     * @param string $country Country code or '' for default country.
      *
-     * @return array|null Array of company info, or null if request to service failed.
+     * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      *
-     * @throws InvalidMarketException If given market is not supported.
+     * @throws InvalidCountryException If given country is not supported.
      */
-    public static function lookupNumber(string $number, string $market): ?array
+    public function lookupName(string $name, string $country = ''): ?array
     {
-        $market = empty($market) ? config('company-info.default-market') : $market;
+        $country = empty($country) ? $this->config['default-country'] : $country;
 
-        switch ($market) {
-            case 'dk':
-                return CompanyInfoVirk::lookupNumber($number);
-            case 'uk':
-                return CompanyInfoGazette::lookupNumber($number);
-            default:
-                // @phpstan-ignore-next-line
-                throw new InvalidMarketException($market);
+        if (! $this->isSupportedCountry($country)) {
+            throw new InvalidCountryException($country);
         }
+
+        return $this->getProvider($country)->lookupName($name, $country);
+    }
+
+    /**
+     * Lookup a company number, return processed company info.
+     *
+     * @param string $number  Number of company to lookup.
+     * @param string $country Country code or '' for default country.
+     *
+     * @return array<CompanyInfo>|null Array of company info, or null if request failed.
+     *
+     * @throws InvalidCountryException If given country is not supported.
+     */
+    public function lookupNumber(string $number, string $country): ?array
+    {
+        $country = empty($country) ? $this->config['default-country'] : $country;
+
+        if (! $this->isSupportedCountry($country)) {
+            throw new InvalidCountryException($country);
+        }
+
+        return $this->getProvider($country)->lookupNumber($number, $country);
+    }
+
+    /**
+     * Check if given country is supported.
+     *
+     * @param string $country Country code.
+     *
+     * @return bool True if supported, false if not.
+     */
+    private function isSupportedCountry(string $country): bool
+    {
+        return collect($this->config['countries'])->has($country);
+    }
+
+    /**
+     * Get provider for the given country.
+     *
+     * @param string $country Country code.
+     *
+     * @return CompanyInfoProvider
+     */
+    private function getProvider(string $country)
+    {
+        $providerName = $this->config['countries'][$country]['provider'];
+
+        return $this->manager->driver($providerName);
     }
 }

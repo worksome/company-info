@@ -3,28 +3,42 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Http;
-use Worksome\CompanyInfo\CompanyInfoVirk;
+use Worksome\CompanyInfo\Support\CompanyInfoManager;
 
 it('can lookup a company name on dk virk with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
-        '*' => Http::response($response),
+        '*' => Http::response($response['virk']),
     ]);
 
-    $companies = CompanyInfoVirk::lookupName($name);
+    $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
 
-    companyLookupExpectations($companies, $expected);
-})->with('dk-companies');
+    expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies');
 
 it('can lookup a company name on dk virk with actual service', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (
-        config('company-info.services.virk.user_id') == ''
-        || config('company-info.services.virk.password') == ''
-    ) {
-        test()->markTestSkipped();
-    }
+    $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
 
-    $companies = CompanyInfoVirk::lookupName($name);
+    expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
 
-    companyLookupExpectations($companies, $expected);
-})->with('dk-companies');
+it('can lookup a company number on dk virk with faked service', function (string $name, string $number, array $expected, array $response) {
+    Http::fake([
+        '*' => Http::response($response['virk']),
+    ]);
+
+    $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
+
+    expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies');
+
+it('can lookup a company number on dk virk with actual service', function (string $name, string $number, array $expected) {
+    $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
+
+    expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected);
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');

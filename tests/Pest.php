@@ -6,11 +6,18 @@ use Worksome\CompanyInfo\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
 
-function companyLookupExpectations(array $companies, array $expected): void
-{
-    expect($companies)->toHaveCount(count($expected));
+expect()->extend('toHaveCompanyInfo', function (array $expected) {
 
-    expect($companies)->toHaveKey('0.name', $expected[0][1]);
+    // Skip if a request failed.
+    if ($this->value === null) {
+        test()->markTestSkipped();
+    }
 
-    expect($companies)->toHaveKey('0.number', $expected[0][0]);
-}
+    expect($this->value)->toHaveCount(count($expected));
+
+    expect($this->value[0])->toHaveKey('name', $expected[0][1]);
+
+    expect($this->value[0])->toHaveKey('number', $expected[0][0]);
+
+    return $this;
+});

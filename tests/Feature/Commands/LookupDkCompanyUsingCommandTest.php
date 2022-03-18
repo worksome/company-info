@@ -2,63 +2,45 @@
 
 declare(strict_types=1);
 
-it('looks up company info on name for dk market using artisan command', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (
-        config('company-info.services.virk.user_id') == ''
-        || config('company-info.services.virk.password') == ''
-    ) {
-        test()->markTestSkipped();
-    }
-
+it('looks up company info on name for dk country using artisan command', function (string $name, string $number, array $expected) {
     $this
         ->artisan('company-info:lookup', [
             '--name'   => $name,
-            '--market' => 'dk',
+            '--country' => 'dk',
         ])
         ->expectsTable(
-            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country'],
+            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
             $expected
         )
         ->assertSuccessful();
-})->with('dk-companies');
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
 
-it('looks up company info on name for dk market using artisan command, output as json', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (
-        config('company-info.services.virk.user_id') == ''
-        || config('company-info.services.virk.password') == ''
-    ) {
-        test()->markTestSkipped();
-    }
-
+it('looks up company info on name for dk country using artisan command, output as json', function (string $name, string $number, array $expected) {
     $this
         ->artisan('company-info:lookup', [
-            '--name'   => $name,
-            '--market' => 'dk',
-            '--json'   => null,
+            '--name'    => $name,
+            '--country' => 'dk',
+            '--json'    => null,
         ])
         // @TODO: ->expectsOutput('the json output')
         ->assertSuccessful();
-})->with('dk-companies');
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
 
-it('looks up company info on number for dk market using artisan command', function (string $name, string $number, array $expected) {
-    // Skip test if not configured with actual credentials (in phpunit.xml).
-    if (
-        config('company-info.services.virk.user_id') == ''
-        || config('company-info.services.virk.password') == ''
-    ) {
-        test()->markTestSkipped();
-    }
-
+it('looks up company info on number for dk country using artisan command', function (string $name, string $number, array $expected) {
     $this
         ->artisan('company-info:lookup', [
-            '--number' => $number,
-            '--market' => 'dk',
+            '--number'  => $number,
+            '--country' => 'dk',
         ])
         ->expectsTable(
-            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country'],
+            ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
             $expected
         )
         ->assertSuccessful();
-})->with('dk-companies');
+})
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');

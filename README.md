@@ -5,7 +5,7 @@ Lookup company information from public services.
 [![Tests](https://github.com/worksome/company-info/actions/workflows/run-tests.yml/badge.svg)](https://github.com/worksome/company-info/actions/workflows/run-tests.yml)
 [![PHPStan](https://github.com/worksome/company-info/actions/workflows/phpstan.yml/badge.svg)](https://github.com/worksome/company-info/actions/workflows/phpstan.yml)
 
-If your app needs information about a given company, then there are public service API's that can provide that information. It can be a lot of work implementing support for each different service, especially if you need it for several different countries or regions.
+If your app needs information about a given company, then there are public service API's that can provide that information. It can be a lot of work implementing support for each different service, especially if you need it for several different countries.
 
 The Company Info package provides a service that wraps the public services and gives you a simple way to perform the lookups.
 
@@ -30,8 +30,11 @@ php artisan vendor:publish --tag="company-info-config"
 The following environment variables are available to configure the package:
 
 ```ini
-# Define the default market, used when a market is not given.
-COMPANY_INFO_DEFAULT_MARKET=dk
+# Define the default country, used when a country is not given.
+COMPANY_INFO_DEFAULT_COUNTRY=dk
+
+# Define URL and credentials for the Danish CVR API service.
+COMPANY_INFO_CVRAPI_BASE_URL=https://cvrapi.dk/api
 
 # Define URL and credentials for the Danish VIRK service.
 COMPANY_INFO_VIRK_BASE_URL=http://distribution.virk.dk
@@ -41,6 +44,14 @@ COMPANY_INFO_VIRK_PASSWORD=xxx
 # Define URL and credentials for the English Gazette service.
 COMPANY_INFO_GAZETTE_BASE_URL=https://api.companieshouse.gov.uk
 COMPANY_INFO_GAZETTE_KEY=xxx
+
+# Define maximum number of results returned (works for VIRK and Gazette).
+COMPANY_INFO_MAX_RESULTS=10
+
+# Define the default provider for each country.
+COMPANY_INFO_PROVIDER_DK=virk # Can also be cvrapi.
+COMPANY_INFO_PROVIDER_GB=gazette
+COMPANY_INFO_PROVIDER_NO=cvrapi
 ```
 
 To obtain access and credentials to the Danish VIRK service, contact Erhvervsstyrelsen via this page: https://datacvr.virk.dk/artikel/system-til-system-adgang-til-cvr-data.
@@ -51,14 +62,14 @@ To obtain access and credentials to the English Gazette service, contact XXX via
 
 The package provides two general static methods, allowing you to perform company lookups from either name or number (in Denmark, the number is the CVR number).
 
-The methods take a `market` parameter, which must be one of the supported markets, or left out or empty to use the configured default market.
+The methods take a `country` parameter, which must be one of the supported countries, or left out or empty to use the configured default country.
 
-The market code selects the appropriate underlying service for the lookup. Currently the package supports markets `dk` for the Danish VIRK service and `uk` for the English Gazette service. If an invalid market is given, an `InvalidMarketException` is thrown.
+The country code selects the appropriate underlying service for the lookup. Currently the package supports countries `dk` and `no` for the Danish CVR API service, `dk` for the Danish VIRK service and `gb` for the English Gazette service. If an invalid country is given, an `InvalidCountryException` is thrown.
 
 Example lookups:
 
 ```php
-use Worksome\CompanyInfo\CompanyInfo;
+use Worksome\CompanyInfo\Facades\CompanyInfo;
 
 $companies = CompanyInfo::lookupName('worksome', 'dk');
 // - or -
@@ -84,18 +95,20 @@ The company information is a simplified uniform representation of the data provi
     'zipcode'  => '1253',
     'city'     => 'København K',
     'country'  => 'DK',
+    'phone'    => '',
+    'email'    => '',
 ]
 ```
 
-The `number` field is the CVR number for the `dk` market and company number for the `uk` market.
+The `number` field is the CVR number for the `dk` country and company number for the `gb` country.
 
 ## Artisan
 
 The package adds a command for performing lookups at the commandline. This is probably most useful while configuring the services, to check if your access is working.
 
 ```sh
-php artisan company-info:lookup --name=worksome --market=dk
-php artisan company-info:lookup --number=37990485 --market=dk
+php artisan company-info:lookup --name=worksome --country=dk
+php artisan company-info:lookup --number=37990485 --country=dk
 ```
 
 The company information will be displayed in table format.
