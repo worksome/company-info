@@ -2,9 +2,9 @@ name: run-tests
 
 on:
   push:
-    - '**.php'
+    branches: [*]
   pull_request:
-    - '**.php'
+    branches: [*]
       
 jobs:
   test:
