@@ -21,7 +21,8 @@ it('can lookup a company name on dk cvr api with actual service', function (stri
 
     expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected['cvrapi']);
 })
-->with('dk-companies');
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.cvrapi.user_agent') === '');
 
 it('can lookup a company number on dk cvr api with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
@@ -39,7 +40,8 @@ it('can lookup a company number on dk cvr api with actual service', function (st
 
     expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected['cvrapi']);
 })
-->with('dk-companies');
+->with('dk-companies')
+->skip(fn () => config('company-info.providers.cvrapi.user_agent') === '');
 
 it('can lookup a company name on no cvr api with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
@@ -57,7 +59,8 @@ it('can lookup a company name on no cvr api with actual service', function (stri
 
     expect($service->lookupName($name, 'no'))->toHaveCompanyInfo($expected['cvrapi']);
 })
-->with('no-companies');
+->with('no-companies')
+->skip(fn () => config('company-info.providers.cvrapi.user_agent') === '');
 
 it('can lookup a company number on no cvr api with faked service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
@@ -75,4 +78,5 @@ it('can lookup a company number on no cvr api with actual service', function (st
 
     expect($service->lookupNumber($number, 'no'))->toHaveCompanyInfo($expected['cvrapi']);
 })
-->with('no-companies');
+->with('no-companies')
+->skip(fn () => config('company-info.providers.cvrapi.user_agent') === '');

@@ -15,6 +15,7 @@ it('looks up company info on name for dk country using artisan command', functio
         );
 })
 ->with('dk-companies')
+->skip(fn () => config('company-info.countries.dk.provider') === 'cvrapi' && config('company-info.providers.cvrapi.user_agent') === '')
 ->skip(fn () => config('company-info.countries.dk.provider') === 'virk' && (config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === ''));
 
 it('looks up company info on name for dk country using artisan command, output as json', function (string $name, string $number, array $expected) {
@@ -28,6 +29,7 @@ it('looks up company info on name for dk country using artisan command, output a
         // @TODO: ->expectsOutput('the json output')
 })
 ->with('dk-companies')
+->skip(fn () => config('company-info.countries.dk.provider') === 'cvrapi' && config('company-info.providers.cvrapi.user_agent') === '')
 ->skip(fn () => config('company-info.countries.dk.provider') === 'virk' && (config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === ''));
 
 it('looks up company info on number for dk country using artisan command', function (string $name, string $number, array $expected) {
@@ -43,4 +45,5 @@ it('looks up company info on number for dk country using artisan command', funct
         );
 })
 ->with('dk-companies')
+->skip(fn () => config('company-info.countries.dk.provider') === 'cvrapi' && config('company-info.providers.cvrapi.user_agent') === '')
 ->skip(fn () => config('company-info.countries.dk.provider') === 'virk' && (config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === ''));

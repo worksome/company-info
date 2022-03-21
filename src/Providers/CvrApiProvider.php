@@ -18,7 +18,7 @@ class CvrApiProvider implements CompanyInfoProvider
     public function __construct(
         private Client $client,
         private string $baseUrl,
-        private string $userAgent,
+        private ?string $userAgent,
     ) {
     }
 

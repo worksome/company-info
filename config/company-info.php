@@ -41,7 +41,7 @@ return [
     'providers' => [
         'cvrapi' => [
             'base_url'   => env('COMPANY_INFO_CVRAPI_BASE_URL', 'https://cvrapi.dk/api'),
-            'user_agent' => env('COMPANY_INFO_CVRAPI_USER_AGENT'),
+            'user_agent' => env('COMPANY_INFO_CVRAPI_USER_AGENT', ''),
         ],
         'gazette' => [
             'base_url' => env('COMPANY_INFO_GAZETTE_BASE_URL', 'https://api.companieshouse.gov.uk'),
