@@ -12,7 +12,7 @@ return [
 
     'countries' => [
         'dk' => [
-            'provider' => env('COMPANY_INFO_PROVIDER_DK', 'cvrapi'),
+            'provider' => env('COMPANY_INFO_PROVIDER_DK', 'virk'),
         ],
         'gb' => [
             'provider' => env('COMPANY_INFO_PROVIDER_GB', 'gazette'),

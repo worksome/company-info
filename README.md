@@ -9,7 +9,7 @@ If your app needs information about a given company, then there are public servi
 
 The Company Info package provides a service that wraps the public services and gives you a simple way to perform the lookups.
 
-Currently the package supports the public service API's of the Danish VIRK and the UK Gazette services.
+Currently the package supports the public service API's of the Danish VIRK and CVR API services and the GB Gazette service.
 
 ## Installation
 
@@ -54,10 +54,6 @@ COMPANY_INFO_PROVIDER_GB=gazette
 COMPANY_INFO_PROVIDER_NO=cvrapi
 ```
 
-To obtain access and credentials to the Danish VIRK service, contact Erhvervsstyrelsen via this page: https://datacvr.virk.dk/artikel/system-til-system-adgang-til-cvr-data.
-
-To obtain access and credentials to the English Gazette service, contact XXX via this page: XXX.
-
 ## Usage
 
 The package provides two general static methods, allowing you to perform company lookups from either name or number (in Denmark, the number is the CVR number).
@@ -95,8 +91,8 @@ The company information is a simplified uniform representation of the data provi
     'zipcode'  => '1253',
     'city'     => 'København K',
     'country'  => 'DK',
-    'phone'    => '',
-    'email'    => '',
+    'phone'    => '71991931',
+    'email'    => 'accounting@worksome.com',
 ]
 ```
 
@@ -111,7 +107,7 @@ php artisan company-info:lookup --name=worksome --country=dk
 php artisan company-info:lookup --number=37990485 --country=dk
 ```
 
-The company information will be displayed in table format.
+The company information will be displayed in table format, unless option `--json` is given, then it is output in formatted JSON.
 
 ## Testing
 
@@ -129,19 +125,24 @@ The test suite uses a faked http response instead of calling the actual external
 
 If you want to run tests against the actual external service, copy `phpunit.xml.dist` to `phpunit.xml` and change the `COMPANY_INFO_xxx` variables in it to the credentials you have obtained.
 
-## Ideas for improvements
+## Documentation for services
 
-There is a [free Danish API service](https://cvrapi.dk/documentation) for CVR lookups, which does not require obtaining access from VIRK, but is rate-limited.
+### CVR API (DK)
 
-It might be useful to add a driver-based approach for the lookups, so that for example the currently supported direct VIRK access can be replaced with the CVRAPI service for small businesses.
+There is a [free Danish API service](https://cvrapi.dk/documentation) for CVR lookups, which does not require obtaining access from VIRK, but is rate-limited, so if you make a lot of requests, you might suddenly get a null result, which is due to a "QUOTA EXCEEDED" error from CVR API. You can pay to have a larger quota, or use the official VIRK service instead (see below).
 
-Like:
+### VIRK (DK)
 
-```ini
-COMPANY_INFO_VIRK_DRIVER=virk
-# - or --
-COMPANY_INFO_VIRK_DRIVER=cvrapi
-```
+VIRK is the official Danish service for CVR lookups. See some documentation [here](https://data.virk.dk/sites/default/files/soegeeksempler_v.6.x.pdf).
+
+To obtain access and credentials to the Danish VIRK service, contact Erhvervsstyrelsen via this page: https://datacvr.virk.dk/artikel/system-til-system-adgang-til-cvr-data.
+
+### Gazette (GB)
+
+This package uses the [company search](https://developer-specs.company-information.service.gov.uk/companies-house-public-data-api/reference/search/search-companies) part of the Gazette service.
+
+
+To obtain access and credentials to the Gazette service, see https://developer-specs.company-information.service.gov.uk/.
 
 ## Changelog
 
