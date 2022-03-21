@@ -2,7 +2,9 @@ name: run-tests
 
 on:
   push:
-      - '**.php'
+    - '**.php'
+  pull_request:
+    - '**.php'
       
 jobs:
   test:
