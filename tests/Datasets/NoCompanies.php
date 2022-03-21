@@ -7,16 +7,18 @@ dataset('no-companies', [
         'worksome',
         '923257470',
         [
-            [
-                '923257470',
-                'WORKSOME AS',
-                'Andersrudveien 1',
-                '',
-                '1914',
-                'YTRE ENEBAKK',
-                'NO',
-                null,
-                null,
+            'cvrapi' => [
+                [
+                    '923257470',
+                    'WORKSOME AS',
+                    'Andersrudveien 1',
+                    '',
+                    '1914',
+                    'YTRE ENEBAKK',
+                    'NO',
+                    null,
+                    null,
+                ],
             ],
         ],
         [

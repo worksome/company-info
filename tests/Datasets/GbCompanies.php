@@ -7,16 +7,18 @@ dataset('gb-companies', [
         'worksome',
         '11615731',
         [
-            [
-                '11615731',
-                'WORKSOME LTD',
-                '3 Waterhouse Square',
-                '138 - 142 Holborn',
-                'EC1N 2SW',
-                'London',
-                'GB',
-                null,
-                null,
+            'gazette' => [
+                [
+                    '11615731',
+                    'WORKSOME LTD',
+                    '3 Waterhouse Square',
+                    '138 - 142 Holborn',
+                    'EC1N 2SW',
+                    'London',
+                    'GB',
+                    null,
+                    null,
+                ],
             ],
         ],
         [

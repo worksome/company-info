@@ -12,14 +12,14 @@ it('can lookup a company name on dk virk with faked service', function (string $
 
     $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
 
-    expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected);
+    expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected['virk']);
 })
 ->with('dk-companies');
 
 it('can lookup a company name on dk virk with actual service', function (string $name, string $number, array $expected) {
     $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
 
-    expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected);
+    expect($service->lookupName($name, 'dk'))->toHaveCompanyInfo($expected['virk']);
 })
 ->with('dk-companies')
 ->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
@@ -31,14 +31,14 @@ it('can lookup a company number on dk virk with faked service', function (string
 
     $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
 
-    expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected);
+    expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected['virk']);
 })
 ->with('dk-companies');
 
 it('can lookup a company number on dk virk with actual service', function (string $name, string $number, array $expected) {
     $service = $this->app->get(CompanyInfoManager::class)->driver('virk');
 
-    expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected);
+    expect($service->lookupNumber($number, 'dk'))->toHaveCompanyInfo($expected['virk']);
 })
 ->with('dk-companies')
 ->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');

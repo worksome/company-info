@@ -8,14 +8,14 @@ it('looks up company info on name for dk country using artisan command', functio
             '--name'   => $name,
             '--country' => 'dk',
         ])
+        ->assertSuccessful()
         ->expectsTable(
             ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
-            $expected
-        )
-        ->assertSuccessful();
+            $expected[config('company-info.countries.dk.provider')]
+        );
 })
 ->with('dk-companies')
-->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
+->skip(fn () => config('company-info.countries.dk.provider') === 'virk' && (config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === ''));
 
 it('looks up company info on name for dk country using artisan command, output as json', function (string $name, string $number, array $expected) {
     $this
@@ -24,11 +24,11 @@ it('looks up company info on name for dk country using artisan command, output a
             '--country' => 'dk',
             '--json'    => null,
         ])
-        // @TODO: ->expectsOutput('the json output')
         ->assertSuccessful();
+        // @TODO: ->expectsOutput('the json output')
 })
 ->with('dk-companies')
-->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
+->skip(fn () => config('company-info.countries.dk.provider') === 'virk' && (config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === ''));
 
 it('looks up company info on number for dk country using artisan command', function (string $name, string $number, array $expected) {
     $this
@@ -36,11 +36,11 @@ it('looks up company info on number for dk country using artisan command', funct
             '--number'  => $number,
             '--country' => 'dk',
         ])
+        ->assertSuccessful()
         ->expectsTable(
             ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
-            $expected
-        )
-        ->assertSuccessful();
+            $expected[config('company-info.countries.dk.provider')]
+        );
 })
 ->with('dk-companies')
-->skip(fn () => config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === '');
+->skip(fn () => config('company-info.countries.dk.provider') === 'virk' && (config('company-info.providers.virk.user_id') === '' || config('company-info.providers.virk.password') === ''));

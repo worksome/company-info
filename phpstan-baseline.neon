@@ -1,0 +1,22 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$name of method Worksome\\\\CompanyInfo\\\\CompanyInfo\\:\\:lookupName\\(\\) expects string, array\\|string\\|true given\\.$#"
+			count: 1
+			path: src/Commands/CompanyInfoLookupCommand.php
+
+		-
+			message: "#^Parameter \\#1 \\$number of method Worksome\\\\CompanyInfo\\\\CompanyInfo\\:\\:lookupNumber\\(\\) expects string, array\\|string\\|true given\\.$#"
+			count: 1
+			path: src/Commands/CompanyInfoLookupCommand.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 1
+			path: src/CompanyInfo.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 1
+			path: src/CompanyInfo.php
+

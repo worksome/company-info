@@ -8,12 +8,25 @@ it('looks up company info on name for gb country using artisan command', functio
             '--name'    => $name,
             '--country' => 'gb',
         ])
+        ->assertSuccessful()
         ->expectsTable(
             ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
-            $expected
-        )
-        ->assertSuccessful();
+            $expected[config('company-info.countries.gb.provider')]
+        );
 })
+->with('gb-companies')
+->skip(fn () => config('company-info.providers.gazette.key') === '');
+
+it('looks up company info on name for gb country using artisan command, output as json', function (string $name, string $number, array $expected) {
+    $this
+        ->artisan('company-info:lookup', [
+            '--name'    => $name,
+            '--country' => 'gb',
+            '--json'    => null,
+        ])
+        ->assertSuccessful();
+        // @TODO: ->expectsOutput('the json output')
+    })
 ->with('gb-companies')
 ->skip(fn () => config('company-info.providers.gazette.key') === '');
 
@@ -23,11 +36,11 @@ it('looks up company info on number for gb country using artisan command', funct
             '--number'  => $number,
             '--country' => 'gb',
         ])
+        ->assertSuccessful()
         ->expectsTable(
             ['Number', 'Name', 'Address1', 'Address2', 'Zipcode', 'City', 'Country', 'Phone', 'Email'],
-            $expected
-        )
-        ->assertSuccessful();
+            $expected[config('company-info.countries.gb.provider')]
+        );
 })
 ->with('gb-companies')
 ->skip(fn () => config('company-info.providers.gazette.key') === '');

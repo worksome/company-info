@@ -12,7 +12,7 @@ return [
 
     'countries' => [
         'dk' => [
-            'provider' => env('COMPANY_INFO_PROVIDER_DK', 'virk'), // @TODO: Change default to 'cvrapi' when we get that working.
+            'provider' => env('COMPANY_INFO_PROVIDER_DK', 'cvrapi'),
         ],
         'gb' => [
             'provider' => env('COMPANY_INFO_PROVIDER_GB', 'gazette'),

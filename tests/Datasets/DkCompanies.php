@@ -7,16 +7,31 @@ dataset('dk-companies', [
         'worksome',
         '37990485',
         [
-            [
-                '37990485',
-                'Worksome ApS',
-                'Toldbodgade 35, 1.',
-                '',
-                '1253',
-                'København K',
-                'DK',
-                '71991931',
-                'accounting@worksome.com',
+            'virk' => [
+                [
+                    '37990485',
+                    'Worksome ApS',
+                    'Toldbodgade 35, 1.',
+                    '',
+                    '1253',
+                    'København K',
+                    'DK',
+                    '71991931',
+                    'accounting@worksome.com',
+                ],
+            ],
+            'cvrapi' => [
+                [
+                    '37990485',
+                    'Worksome ApS',
+                    'Toldbodgade 35, 1',
+                    '',
+                    '1253',
+                    'København K',
+                    'DK',
+                    '71991931',
+                    'accounting@worksome.com',
+                ],
             ],
         ],
         [
