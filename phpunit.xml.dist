@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    executionOrder="random"
+    failOnWarning="true"
+    failOnRisky="true"
+    failOnEmptyTestSuite="true"
+    beStrictAboutOutputDuringTests="true"
+    verbose="true"
+>
+    <testsuites>
+        <testsuite name="Worksome Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="COMPANY_INFO_CVRAPI_USER_AGENT" value=""/> 
+        <env name="COMPANY_INFO_GAZETTE_KEY" value=""/>
+        <env name="COMPANY_INFO_VIRK_USER_ID" value=""/>
+        <env name="COMPANY_INFO_VIRK_PASSWORD" value=""/>
+    </php>
+</phpunit>
