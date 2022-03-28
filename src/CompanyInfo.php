@@ -25,7 +25,7 @@ class CompanyInfo
      * @param string $name    Name of company to lookup.
      * @param string $country Country code or '' for default country.
      *
-     * @return array<CompanyInfo>|null Array of company info, or null if request failed.
+     * @return array<\Worksome\CompanyInfo\DataObjects\CompanyInfo>|null Array of company info, or null if request failed.
      *
      * @throws InvalidCountryException If given country is not supported.
      */
@@ -46,7 +46,7 @@ class CompanyInfo
      * @param string $number  Number of company to lookup.
      * @param string $country Country code or '' for default country.
      *
-     * @return array<CompanyInfo>|null Array of company info, or null if request failed.
+     * @return array<\Worksome\CompanyInfo\DataObjects\CompanyInfo>|null Array of company info, or null if request failed.
      *
      * @throws InvalidCountryException If given country is not supported.
      */
