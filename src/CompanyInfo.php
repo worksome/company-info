@@ -20,6 +20,15 @@ class CompanyInfo
     }
 
     /**
+     * @param array $lookup   Lookup parameters.
+     * @param array $response Response to return when a lookup is made.
+     */
+    public function fake(array $lookup, array $response = []): void
+    {
+        $this->getProvider($lookup['country'])->setFakeResponse($response);
+    }
+
+    /**
      * Lookup a company name, return processed company info.
      *
      * @param string $name    Name of company to lookup.

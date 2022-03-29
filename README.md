@@ -144,6 +144,45 @@ This package uses the [company search](https://developer-specs.company-informati
 
 To obtain access and credentials to the Gazette service, see https://developer-specs.company-information.service.gov.uk/.
 
+## Testing
+
+To help you write tests using CompanyInfo, we provide a fake implementation via the `CompanyInfo::fake()` method.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Worksome\CompanyInfo\Facades\CompanyInfo;
+
+it('can perform company info lookup using faked response', function () {
+    $lookup = [
+        'name'    => 'worksome',
+        'country' => 'dk',
+    ];
+
+    $response = [[
+        'number'   => '37990485',
+        'name'     => 'Worksome ApS',
+        'address1' => 'Toldbodgade 35, 1.',
+        'address2' => '',
+        'zipcode'  => '1253',
+        'city'     => 'København K',
+        'country'  => 'DK',
+        'phone'    => '71991931',
+        'email'    => 'accounting@worksome.com',
+    ]];
+
+    CompanyInfo::fake($lookup, $response);
+
+    $companies = CompanyInfo::lookupName('worksome', 'dk');
+
+    expect($companies)
+        ->toHaveCount(1)
+        ->toEqual($response);
+});
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

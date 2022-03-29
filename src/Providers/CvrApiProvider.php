@@ -7,11 +7,14 @@ namespace Worksome\CompanyInfo\Providers;
 use Illuminate\Http\Client\Factory as Client;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
+use Worksome\CompanyInfo\Concerns\FakeResponse;
 use Worksome\CompanyInfo\Contracts\CompanyInfoProvider;
 use Worksome\CompanyInfo\DataObjects\CompanyInfo;
 
 class CvrApiProvider implements CompanyInfoProvider
 {
+    use FakeResponse;
+
     /**
      * Construct the provider.
      */
@@ -32,6 +35,10 @@ class CvrApiProvider implements CompanyInfoProvider
      */
     public function lookupName(string $name, string $country = 'dk'): ?array
     {
+        if ($this->fakeResponse) {
+            return $this->fakeResponse;
+        }
+
         $response = $this
             ->client
             ->withHeaders($this->getHeaders())
@@ -50,6 +57,10 @@ class CvrApiProvider implements CompanyInfoProvider
      */
     public function lookupNumber(string $number, string $country = 'dk'): ?array
     {
+        if ($this->fakeResponse) {
+            return $this->fakeResponse;
+        }
+
         $response = $this
             ->client
             ->withHeaders($this->getHeaders())

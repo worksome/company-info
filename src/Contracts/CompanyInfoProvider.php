@@ -9,4 +9,6 @@ interface CompanyInfoProvider
     public function lookupName(string $name, string $country): ?array;
 
     public function lookupNumber(string $number, string $country): ?array;
+
+    public function setFakeResponse(array $response): void;
 }

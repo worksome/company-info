@@ -15,9 +15,9 @@ expect()->extend('toHaveCompanyInfo', function (array $expected) {
 
     expect($this->value)->toHaveCount(count($expected));
 
-    expect($this->value[0])->toHaveKey('name', $expected[0][1]);
+    expect($this->value[0])->toHaveKey('name', $expected[0]['name']);
 
-    expect($this->value[0])->toHaveKey('number', $expected[0][0]);
+    expect($this->value[0])->toHaveKey('number', $expected[0]['number']);
 
     return $this;
 });
