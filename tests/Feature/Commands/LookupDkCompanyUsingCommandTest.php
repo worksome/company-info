@@ -25,8 +25,8 @@ it('looks up company info on name for dk country using artisan command, output a
             '--country' => 'dk',
             '--json'    => null,
         ])
-        ->assertSuccessful();
-        // @TODO: ->expectsOutput('the json output')
+        ->assertSuccessful()
+        ->expectsOutput(trim(file_get_contents('tests/Files/worksome-dk.json')));
 })
 ->with('dk-companies')
 ->skip(fn () => config('company-info.countries.dk.provider') === 'cvrapi' && config('company-info.providers.cvrapi.user_agent') === '')

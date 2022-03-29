@@ -109,22 +109,6 @@ php artisan company-info:lookup --number=37990485 --country=dk
 
 The company information will be displayed in table format, unless option `--json` is given, then it is output in formatted JSON.
 
-## Testing
-
-The package has a suite of functional tests as well as phpstan analysis and coding style checking.
-
-Run all the tests like this:
-
-```sh
-composer test
-```
-
-See `composer.json` for other options for tests and linting.
-
-The test suite uses a faked http response instead of calling the actual external services. The faked response is a copy of an actual response from the service.
-
-If you want to run tests against the actual external service, copy `phpunit.xml.dist` to `phpunit.xml` and change the `COMPANY_INFO_xxx` variables in it to the credentials you have obtained.
-
 ## Documentation for services
 
 ### CVR API (DK)
@@ -182,6 +166,21 @@ it('can perform company info lookup using faked response', function () {
     expect($companies[0]->toArray())->toEqual($response[0]);
 });
 ```
+
+The package has a suite of functional tests as well as phpstan analysis and coding style checking.
+
+Run all the tests like this:
+
+```sh
+composer test
+```
+
+See `composer.json` for other options for tests and linting.
+
+The test suite uses a faked http response instead of calling the actual external services. The faked response is a copy of an actual response from the service.
+
+If you want to run tests against the actual external service, copy `phpunit.xml.dist` to `phpunit.xml` and change the `COMPANY_INFO_xxx` variables in it to the credentials you have obtained.
+
 
 ## Changelog
 

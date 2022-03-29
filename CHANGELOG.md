@@ -2,6 +2,11 @@
 
 All notable changes to `company-info` will be documented in this file.
 
+## 1.1.4 - 2022-03-29
+
+- Fixes for the README.
+- Added json files for testing the artisan outputs.
+
 ## 1.1.3 - 2022-03-29
 
 - Removed unnecessary default env vars from config/company-info.php.

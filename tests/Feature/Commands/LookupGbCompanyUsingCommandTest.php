@@ -24,9 +24,9 @@ it('looks up company info on name for gb country using artisan command, output a
             '--country' => 'gb',
             '--json'    => null,
         ])
-        ->assertSuccessful();
-        // @TODO: ->expectsOutput('the json output')
-    })
+        ->assertSuccessful()
+        ->expectsOutput(trim(file_get_contents('tests/Files/worksome-gb.json')));
+})
 ->with('gb-companies')
 ->skip(fn () => config('company-info.providers.gazette.key') === '');
 
