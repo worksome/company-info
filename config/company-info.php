@@ -45,12 +45,12 @@ return [
         ],
         'gazette' => [
             'base_url' => env('COMPANY_INFO_GAZETTE_BASE_URL', 'https://api.companieshouse.gov.uk'),
-            'key'      => env('COMPANY_INFO_GAZETTE_KEY', env('GAZETTE_KEY')),
+            'key'      => env('COMPANY_INFO_GAZETTE_KEY', ''),
         ],
         'virk' => [
             'base_url' => env('COMPANY_INFO_VIRK_BASE_URL', 'http://distribution.virk.dk'),
-            'user_id'  => env('COMPANY_INFO_VIRK_USER_ID', env('VIRK_USER_ID')),
-            'password' => env('COMPANY_INFO_VIRK_PASSWORD', env('VIRK_PASSWORD')),
+            'user_id'  => env('COMPANY_INFO_VIRK_USER_ID', ''),
+            'password' => env('COMPANY_INFO_VIRK_PASSWORD', ''),
         ],
     ],
 

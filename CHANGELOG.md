@@ -2,9 +2,14 @@
 
 All notable changes to `company-info` will be documented in this file.
 
+## 1.1.3 - 2022-03-29
+
+- Removed unnecessary default env vars from config/company-info.php.
+
 ## 1.1.2 - 2022-03-29
 
 - Fixed phpdoc for FakeResponse $fakeResponse variable.
+
 ## 1.1.1 - 2022-03-29
 
 - Fixes for CompanyInfo::fake().
