@@ -18,4 +18,19 @@ class CompanyInfo
         public ?string $email = null,
     ) {
     }
+
+    public function toArray(): array
+    {
+        return [
+            'number'   => $this->number,
+            'name'     => $this->name,
+            'address1' => $this->address1,
+            'address2' => $this->address2,
+            'zipcode'  => $this->zipcode,
+            'city'     => $this->city,
+            'country'  => $this->country,
+            'phone'    => $this->phone,
+            'email'    => $this->email,
+        ];
+    }
 }

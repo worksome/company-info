@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Worksome\CompanyInfo\Concerns;
 
+use Worksome\CompanyInfo\DataObjects\CompanyInfo;
+
 trait FakeResponse
 {
     /** @var $fakeResponse Faked response. */
@@ -18,6 +20,18 @@ trait FakeResponse
      */
     public function setFakeResponse(array $response): void
     {
-        $this->fakeResponse = $response;
+        $this->fakeResponse = collect($response)->map(function ($company) {
+            return new CompanyInfo(
+                number:   $company['number'],
+                name:     $company['name'],
+                address1: $company['address1'],
+                address2: $company['address2'],
+                zipcode:  $company['zipcode'],
+                city:     $company['city'],
+                country:  $company['country'],
+                phone:    $company['phone'],
+                email:    $company['email'],
+            );
+        })->toArray();
     }
 }

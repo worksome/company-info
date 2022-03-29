@@ -177,9 +177,9 @@ it('can perform company info lookup using faked response', function () {
 
     $companies = CompanyInfo::lookupName('worksome', 'dk');
 
-    expect($companies)
-        ->toHaveCount(1)
-        ->toEqual($response);
+    expect($companies)->toHaveCount(1);
+
+    expect($companies[0]->toArray())->toEqual($response[0]);
 });
 ```
 

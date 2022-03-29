@@ -6,6 +6,33 @@ use Illuminate\Support\Facades\Http;
 use Worksome\CompanyInfo\Facades\CompanyInfo;
 use Worksome\CompanyInfo\Exceptions\InvalidCountryException;
 
+it('can perform company info lookup using faked response', function () {
+    $lookup = [
+        'name'    => 'worksome',
+        'country' => 'dk',
+    ];
+
+    $response = [[
+        'number'   => '37990485',
+        'name'     => 'Worksome ApS',
+        'address1' => 'Toldbodgade 35, 1.',
+        'address2' => '',
+        'zipcode'  => '1253',
+        'city'     => 'København K',
+        'country'  => 'DK',
+        'phone'    => '71991931',
+        'email'    => 'accounting@worksome.com',
+    ]];
+
+    CompanyInfo::fake($lookup, $response);
+
+    $companies = CompanyInfo::lookupName('worksome', 'dk');
+
+    expect($companies)->toHaveCount(1);
+
+    expect($companies[0]->toArray())->toEqual($response[0]);
+});
+
 it('can lookup a company name using faked dk service', function (string $name, string $number, array $expected, array $response) {
     Http::fake([
         '*' => Http::response($response[config('company-info.countries.dk.provider')])
