@@ -25,7 +25,7 @@ class CompanyInfo
      */
     public function fake(array $lookup, array $response = []): void
     {
-        $this->getProvider($lookup['country'])->setFakeResponse($response);
+        $this->getProvider($lookup['country'] ?? 'DK')->setFakeResponse($response);
     }
 
     /**
