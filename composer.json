@@ -17,14 +17,14 @@
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/contracts": "^9.0",
+        "illuminate/contracts": "^9.46",
         "spatie/laravel-package-tools": "^1.11"
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.4",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.0",
-        "orchestra/testbench": "^7.0",
+        "orchestra/testbench": "^7.17",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.1",
         "pestphp/pest-plugin-parallel": "^1.0",

@@ -19,11 +19,11 @@ class VirkProvider implements CompanyInfoProvider
      * Construct the provider.
      */
     public function __construct(
-        private Client $client,
-        private string $baseUrl,
-        private string $userId,
-        private string $password,
-        private int $maxResults,
+        private readonly Client $client,
+        private readonly string $baseUrl,
+        private readonly string $userId,
+        private readonly string $password,
+        private readonly int $maxResults,
     ) {
     }
 
@@ -147,15 +147,15 @@ class VirkProvider implements CompanyInfoProvider
             $floorDoor = isset($address['sidedoer']) ? ' ' . $address['sidedoer'] : '';
 
             $companies[] = new CompanyInfo(
-                number:   (string) $companyData['cvrNummer'],
-                name:     (string) $companyData['virksomhedMetadata']['nyesteNavn']['navn'],
+                number: (string) $companyData['cvrNummer'],
+                name: (string) $companyData['virksomhedMetadata']['nyesteNavn']['navn'],
                 address1: (string) $address['vejnavn'] . ' ' . $streetNumber . $floor . $floorDoor,
                 address2: (string) $address['bynavn'],
-                zipcode:  (string) $address['postnummer'],
-                city:     (string) $address['postdistrikt'],
-                country:  (string) $address['landekode'],
-                phone:    (string) Arr::get($companyData, 'telefonNummer.0.kontaktoplysning'),
-                email:    (string) Arr::get($companyData, 'elektroniskPost.0.kontaktoplysning'),
+                zipcode: (string) $address['postnummer'],
+                city: (string) $address['postdistrikt'],
+                country: (string) $address['landekode'],
+                phone: (string) Arr::get($companyData, 'telefonNummer.0.kontaktoplysning'),
+                email: (string) Arr::get($companyData, 'elektroniskPost.0.kontaktoplysning'),
             );
         }
 
