@@ -25,8 +25,6 @@ final class CompanyInfoLookupCommand extends Command
 
     /**
      * Handle the lookup command.
-     *
-     * @return int
      */
     public function handle(CompanyInfo $service): int
     {
@@ -51,8 +49,6 @@ final class CompanyInfoLookupCommand extends Command
      * Display company information in human-readable table format.
      *
      * @param array|null $companies Array of companies.
-     *
-     * @return void
      */
     private function displayJson(?array $companies): void
     {
@@ -67,8 +63,6 @@ final class CompanyInfoLookupCommand extends Command
      * Display company information in human-readable table format.
      *
      * @param array|null $companies Array of companies.
-     *
-     * @return void
      */
     private function displayTable(?array $companies): void
     {

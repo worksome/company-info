@@ -15,7 +15,7 @@ class CompanyInfo
      */
     public function __construct(
         private array $config,
-        private CompanyInfoManager $manager,
+        private readonly CompanyInfoManager $manager,
     ) {
     }
 

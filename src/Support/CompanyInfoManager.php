@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Worksome\CompanyInfo\Support;
 
-use Illuminate\Support\Manager;
 use Illuminate\Http\Client\Factory as Client;
+use Illuminate\Support\Manager;
 use Worksome\CompanyInfo\Providers\CvrApiProvider;
 use Worksome\CompanyInfo\Providers\GazetteProvider;
 use Worksome\CompanyInfo\Providers\VirkProvider;
@@ -19,14 +19,11 @@ class CompanyInfoManager extends Manager
      */
     public function getDefaultDriver()
     {
-        // @TODO: Do nothing or throw exception?
         return '';
     }
 
     /**
      * Create CVR API service driver.
-     *
-     * @return CvrApiProvider
      */
     public function createCvrApiDriver(): CvrApiProvider
     {
@@ -39,8 +36,6 @@ class CompanyInfoManager extends Manager
 
     /**
      * Create Gazette service driver.
-     *
-     * @return GazetteProvider
      */
     public function createGazetteDriver(): GazetteProvider
     {
@@ -54,8 +49,6 @@ class CompanyInfoManager extends Manager
 
     /**
      * Create VIRK service driver.
-     *
-     * @return VirkProvider
      */
     public function createVirkDriver(): VirkProvider
     {

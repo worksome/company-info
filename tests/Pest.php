@@ -1,4 +1,6 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+<?php
+
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 
 declare(strict_types=1);
 
@@ -7,7 +9,6 @@ use Worksome\CompanyInfo\Tests\TestCase;
 uses(TestCase::class)->in(__DIR__);
 
 expect()->extend('toHaveCompanyInfo', function (array $expected) {
-
     // Skip if a request failed.
     if ($this->value === null) {
         test()->markTestSkipped();

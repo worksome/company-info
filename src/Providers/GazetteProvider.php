@@ -19,10 +19,10 @@ class GazetteProvider implements CompanyInfoProvider
      * Construct the provider.
      */
     public function __construct(
-        private Client $client,
-        private string $baseUrl,
-        private string $key,
-        private int $maxResults,
+        private readonly Client $client,
+        private readonly string $baseUrl,
+        private readonly string $key,
+        private readonly int $maxResults,
     ) {
     }
 
@@ -66,7 +66,7 @@ class GazetteProvider implements CompanyInfoProvider
             ->withBasicAuth($this->key, '')
             ->get("{$this->baseUrl}/search/companies?q={$number}&items_per_page={$this->maxResults}");
 
-            return self::processResponse($response);
+        return self::processResponse($response);
     }
 
     /**
@@ -110,13 +110,13 @@ class GazetteProvider implements CompanyInfoProvider
             }
 
             $companies[] = new CompanyInfo(
-                number:   $company['company_number'],
-                name:     $company['title'],
+                number: $company['company_number'],
+                name: $company['title'],
                 address1: empty($premises) ? $addressLine1 : "{$premises} {$addressLine1}",
                 address2: $addressLine2,
-                zipcode:  $address['postal_code'] ?? '',
-                city:     $address['locality'] ?? '',
-                country:  $country,
+                zipcode: $address['postal_code'] ?? '',
+                city: $address['locality'] ?? '',
+                country: $country,
             );
         }
 

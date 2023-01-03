@@ -19,9 +19,9 @@ class CvrApiProvider implements CompanyInfoProvider
      * Construct the provider.
      */
     public function __construct(
-        private Client $client,
-        private string $baseUrl,
-        private ?string $userAgent,
+        private readonly Client $client,
+        private readonly string $baseUrl,
+        private readonly ?string $userAgent,
     ) {
     }
 
@@ -95,15 +95,15 @@ class CvrApiProvider implements CompanyInfoProvider
         }
 
         $companies[] = new CompanyInfo(
-            number:   (string) $company['vat'],
-            name:     (string) $company['name'],
+            number: (string) $company['vat'],
+            name: (string) $company['name'],
             address1: (string) $company['address'],
             address2: (string) $company['cityname'],
-            zipcode:  (string) $company['zipcode'],
-            city:     (string) $company['city'],
-            country:  (string) $country,
-            phone:    (string) $company['phone'],
-            email:    (string) $company['email'],
+            zipcode: (string) $company['zipcode'],
+            city: (string) $company['city'],
+            country: (string) $country,
+            phone: (string) $company['phone'],
+            email: (string) $company['email'],
         );
 
         return $companies;
