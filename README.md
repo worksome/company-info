@@ -9,7 +9,7 @@ If your app needs information about a given company, then there are public servi
 
 The Company Info package provides a service that wraps the public services and gives you a simple way to perform the lookups.
 
-Currently the package supports the public service API's of the Danish VIRK and CVR API services and the GB Gazette service.
+Currently, the package supports the public service API's of the Danish VIRK and CVR API services and the GB Gazette service.
 
 ## Installation
 
