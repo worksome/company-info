@@ -1,4 +1,4 @@
-name: dependabot-auto-merge
+name: Dependabot Auto-Merge
 on: pull_request_target
 
 permissions:
@@ -13,7 +13,7 @@ jobs:
 
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v1.3.5
+        uses: dependabot/fetch-metadata@v1
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 

@@ -12,7 +12,7 @@ final class CompanyInfoLookupCommand extends Command
     /**
      * Options for JSON display.
      */
-    private const JSON_OPTIONS = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR;
+    private const JSON_OPTIONS = JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_NUMERIC_CHECK|JSON_PRETTY_PRINT|JSON_THROW_ON_ERROR;
 
     public $signature = 'company-info:lookup
         {--name=   : The company name to lookup.}
