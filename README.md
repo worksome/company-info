@@ -184,7 +184,7 @@ If you want to run tests against the actual external service, copy `phpunit.xml.
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [GitHub Releases](https://github.com/worksome/company-info/releases) for more information on what has changed recently.
 
 ## Contributing
 
