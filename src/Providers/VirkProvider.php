@@ -35,7 +35,7 @@ class VirkProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    public function lookupName(string $name, string $country = 'dk'): ?array
+    public function lookupName(string $name, string $country = 'dk'): array|null
     {
         if ($this->fakeResponse) {
             return $this->fakeResponse;
@@ -59,7 +59,7 @@ class VirkProvider implements CompanyInfoProvider
                             'must' => [
                                 'prefix' => [
                                     // Get companies starting with this name.
-                                    'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name
+                                    'Vrvirksomhed.virksomhedMetadata.nyesteNavn.navn' => $name,
                                 ],
                             ],
                             'must_not' => [
@@ -86,7 +86,7 @@ class VirkProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    public function lookupNumber(string $number, string $country = 'dk'): ?array
+    public function lookupNumber(string $number, string $country = 'dk'): array|null
     {
         if ($this->fakeResponse) {
             return $this->fakeResponse;
@@ -107,7 +107,7 @@ class VirkProvider implements CompanyInfoProvider
                     ],
                     'query' => [
                         'term' => [
-                            'Vrvirksomhed.cvrNummer' => $number
+                            'Vrvirksomhed.cvrNummer' => $number,
                         ],
                     ],
                     'from' => 0,
@@ -126,7 +126,7 @@ class VirkProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    private function processResponse(Response $response): ?array
+    private function processResponse(Response $response): array|null
     {
         if ($response->failed()) {
             return null;

@@ -64,7 +64,7 @@ dataset('no-companies', [
                         'addressco' => null,
                         'industrycode' => 0,
                         'industrydesc' => null,
-                    ]
+                    ],
                 ],
                 't' => 100,
                 'version' => 6,

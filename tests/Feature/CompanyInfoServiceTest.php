@@ -37,7 +37,7 @@ it(
     'can lookup a company name using faked dk service',
     function (string $name, string $number, array $expected, array $response) {
         Http::fake([
-            '*' => Http::response($response[config('company-info.countries.dk.provider')])
+            '*' => Http::response($response[config('company-info.countries.dk.provider')]),
         ]);
     
         expect(CompanyInfo::lookupName($name, 'dk'))->toHaveCompanyInfo(
@@ -65,7 +65,7 @@ it(
     'can lookup a company number using faked dk service',
     function (string $name, string $number, array $expected, array $response) {
         Http::fake([
-            '*' => Http::response($response[config('company-info.countries.dk.provider')])
+            '*' => Http::response($response[config('company-info.countries.dk.provider')]),
         ]);
     
         expect(CompanyInfo::lookupNumber($number, 'dk'))->toHaveCompanyInfo(
@@ -93,7 +93,7 @@ it(
     'can lookup a company name using faked gb service',
     function (string $name, string $number, array $expected, array $response) {
         Http::fake([
-            '*' => Http::response($response[config('company-info.countries.gb.provider')])
+            '*' => Http::response($response[config('company-info.countries.gb.provider')]),
         ]);
     
         expect(CompanyInfo::lookupName($name, 'gb'))->toHaveCompanyInfo(

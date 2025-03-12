@@ -21,7 +21,7 @@ class CvrApiProvider implements CompanyInfoProvider
     public function __construct(
         private readonly Client $client,
         private readonly string $baseUrl,
-        private readonly ?string $userAgent,
+        private readonly string|null $userAgent,
     ) {
     }
 
@@ -33,7 +33,7 @@ class CvrApiProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    public function lookupName(string $name, string $country = 'dk'): ?array
+    public function lookupName(string $name, string $country = 'dk'): array|null
     {
         if ($this->fakeResponse) {
             return $this->fakeResponse;
@@ -55,7 +55,7 @@ class CvrApiProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    public function lookupNumber(string $number, string $country = 'dk'): ?array
+    public function lookupNumber(string $number, string $country = 'dk'): array|null
     {
         if ($this->fakeResponse) {
             return $this->fakeResponse;
@@ -77,7 +77,7 @@ class CvrApiProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    private function processResponse(Response $response, string $country): ?array
+    private function processResponse(Response $response, string $country): array|null
     {
         if ($response->failed()) {
             return null;

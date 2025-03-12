@@ -1,17 +1,44 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			message: '#^Parameter \#1 \$name of method Worksome\\CompanyInfo\\CompanyInfo\:\:lookupName\(\) expects string, array\|string\|true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Commands/CompanyInfoLookupCommand.php
+
+		-
+			message: '#^Parameter \#1 \$number of method Worksome\\CompanyInfo\\CompanyInfo\:\:lookupNumber\(\) expects string, array\|string\|true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Commands/CompanyInfoLookupCommand.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-empty\-string and false will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Commands/CompanyInfoLookupCommand.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
 			count: 1
 			path: src/CompanyInfo.php
 
 		-
-			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
 			count: 1
 			path: src/CompanyInfo.php
 
 		-
-			message: "#^Worksome\\\\CompanyInfo\\\\Facades\\\\CompanyInfo facade should not be used\\.$#"
+			message: '#^Cannot call method instance\(\) on Illuminate\\Contracts\\Foundation\\Application\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Facades/CompanyInfo.php
+
+		-
+			message: '#^Worksome\\CompanyInfo\\Facades\\CompanyInfo facade should not be used\.$#'
+			identifier: larastanStrictRules.noFacadeRule
 			count: 1
 			path: src/Facades/CompanyInfo.php
 

@@ -34,7 +34,7 @@ class GazetteProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    public function lookupName(string $name, string $country = 'gb'): ?array
+    public function lookupName(string $name, string $country = 'gb'): array|null
     {
         if ($this->fakeResponse) {
             return $this->fakeResponse;
@@ -55,7 +55,7 @@ class GazetteProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    public function lookupNumber(string $number, string $country = 'gb'): ?array
+    public function lookupNumber(string $number, string $country = 'gb'): array|null
     {
         if ($this->fakeResponse) {
             return $this->fakeResponse;
@@ -76,7 +76,7 @@ class GazetteProvider implements CompanyInfoProvider
      *
      * @return array<CompanyInfo>|null Array of company info, or null if request failed.
      */
-    private function processResponse(Response $response): ?array
+    private function processResponse(Response $response): array|null
     {
         if ($response->failed()) {
             return null;

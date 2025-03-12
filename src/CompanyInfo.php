@@ -38,7 +38,7 @@ class CompanyInfo
      *
      * @throws InvalidCountryException If given country is not supported.
      */
-    public function lookupName(string $name, string $country = ''): ?array
+    public function lookupName(string $name, string $country = ''): array|null
     {
         $country = empty($country) ? $this->config['default-country'] : $country;
 
@@ -59,7 +59,7 @@ class CompanyInfo
      *
      * @throws InvalidCountryException If given country is not supported.
      */
-    public function lookupNumber(string $number, string $country): ?array
+    public function lookupNumber(string $number, string $country): array|null
     {
         $country = empty($country) ? $this->config['default-country'] : $country;
 
