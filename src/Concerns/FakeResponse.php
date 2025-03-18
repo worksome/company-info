@@ -9,7 +9,7 @@ use Worksome\CompanyInfo\DataObjects\CompanyInfo;
 trait FakeResponse
 {
     /** @var array<CompanyInfo>|null $fakeResponse Faked response. */
-    private ?array $fakeResponse = null;
+    private array|null $fakeResponse = null;
 
     /**
      * Set faked response.

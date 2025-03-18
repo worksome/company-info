@@ -50,7 +50,7 @@ final class CompanyInfoLookupCommand extends Command
      *
      * @param array|null $companies Array of companies.
      */
-    private function displayJson(?array $companies): void
+    private function displayJson(array|null $companies): void
     {
         $json = json_encode($companies, self::JSON_OPTIONS);
 
@@ -64,7 +64,7 @@ final class CompanyInfoLookupCommand extends Command
      *
      * @param array|null $companies Array of companies.
      */
-    private function displayTable(?array $companies): void
+    private function displayTable(array|null $companies): void
     {
         $companies = collect($companies)->map(function ($company) {
             return [

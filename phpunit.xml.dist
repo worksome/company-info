@@ -7,14 +7,8 @@
     cacheDirectory=".phpunit.cache"
 >
     <testsuites>
-        <testsuite name="Worksome Test Suite">
+        <testsuite name="Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <php>
-        <env name="COMPANY_INFO_CVRAPI_USER_AGENT" value=""/> 
-        <env name="COMPANY_INFO_GAZETTE_KEY" value=""/>
-        <env name="COMPANY_INFO_VIRK_USER_ID" value=""/>
-        <env name="COMPANY_INFO_VIRK_PASSWORD" value=""/>
-    </php>
 </phpunit>

@@ -164,10 +164,10 @@ dataset('dk-companies', [
                         'addressco' => null,
                         'industrycode' => 620100,
                         'industrydesc' => 'Computerprogrammering',
-                    ]
+                    ],
                 ],
                 't' => 100,
-                'version' => 6
+                'version' => 6,
             ],
         ],
     ],

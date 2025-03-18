@@ -7,15 +7,15 @@ namespace Worksome\CompanyInfo\DataObjects;
 class CompanyInfo
 {
     public function __construct(
-        public ?string $number,
-        public ?string $name,
-        public ?string $address1,
-        public ?string $address2,
-        public ?string $zipcode,
-        public ?string $city,
-        public ?string $country,
-        public ?string $phone = null,
-        public ?string $email = null,
+        public string|null $number,
+        public string|null $name,
+        public string|null $address1,
+        public string|null $address2,
+        public string|null $zipcode,
+        public string|null $city,
+        public string|null $country,
+        public string|null $phone = null,
+        public string|null $email = null,
     ) {
     }
 
